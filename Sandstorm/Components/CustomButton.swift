@@ -19,7 +19,7 @@ struct CustomButton: View {
             Text(buttonText)
                 .foregroundColor(.white)
                 .padding()
-                .frame(minWidth: 0, maxWidth: .infinity) // Metnin genişliğini maksimuma çıkar
+                .frame(minWidth: 0, maxWidth: .infinity)
         }
         .frame(minWidth: 0, maxWidth: .infinity) 
         .frame(height: 56)
@@ -30,7 +30,12 @@ struct CustomButton: View {
                 .stroke(Color.indigo, lineWidth: 3)
         )
         .blur(radius: isEnabled ? 0 : 1)
-        .padding([.leading, .trailing], 16) // Padding değerini düzenle
         .disabled(!isEnabled)
     }
+}
+
+#Preview {
+    CustomButton(buttonText: "Click", action: {print("sdssa")})
+        .previewLayout(.sizeThatFits)
+        .padding(.horizontal, 20)
 }

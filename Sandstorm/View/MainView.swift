@@ -9,48 +9,59 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
-    let screenHeight = UIScreen.main.bounds.height
 
     var body: some View {
-        VStack(spacing: 5) {
-            
-            ZStack {
-              Image("panda")
-                .resizable()
-                .frame(width: 300, height: screenHeight * 0.3)
-              Rectangle()
-                    .fill(.white)
-                .frame(width: 150, height: screenHeight * 0.3)
-                .offset(x: 75)
-            }//: ZStack
-            .offset(x: 75)
+        ZStack {
+            VStack(spacing: 10) {
 
-
-                        
-            HStack {
-                CustomButton(buttonText: viewModel.isLocked ? "Unlock" : "Lock") {
-                    viewModel.toggleLock()
-                }//: CustomButton
+                Image("panda")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 150, height: UIScreen.main.bounds.height * 0.3, alignment: .topLeading)
+                    .clipped()
                 
-                CustomButton(buttonText: "Open from top", isEnabled: !viewModel.isLocked) {
-                    viewModel.toggleDetailView()
+                HStack {
+                    Spacer(minLength: 20)
+                    
+                    CustomButton(buttonText: viewModel.isLocked ? "Unlock" : "Lock") {
+                        viewModel.toggleLock()
+                    }//: CustomButton
+                    
+                    Spacer(minLength: 20)
+
+                    CustomButton(buttonText: "Open from top", isEnabled: !viewModel.isLocked) {
+                        viewModel.toggleDetailView()
+                    }//: CustomButton
+                    
+                    Spacer(minLength: 20)
+
+                }//: HStack
+                .padding(.horizontal, 5)
+                
+                Spacer()
+                
+                HStack {
+                    Spacer(minLength: 20)
+                    
+                    CustomButton(buttonText: "Open Full") {
+                        viewModel.toggleDetailView()
+                    }
+                    
+                    Spacer(minLength: 20)
+
                 }//: CustomButton
-            }//: HStack
-            .padding(.horizontal, 5)
+                            
+            }//: VStack
+            .padding(.vertical, 60)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea()
             
-            Spacer()
+            if viewModel.isShowingDetailView {
+                DetailView(isVisible: $viewModel.isShowingDetailView)
+            }
             
-            CustomButton(buttonText: "Open Full") {
-                viewModel.toggleDetailView()
-            }//: CustomButton
-                        
-        }//: VStack
-        .padding(.vertical, 60)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .fullScreenCover(isPresented: $viewModel.isShowingDetailView) {
-            DetailView()
-        }
-        .ignoresSafeArea()
+        }//: ZStack
+        
     }
 }
 

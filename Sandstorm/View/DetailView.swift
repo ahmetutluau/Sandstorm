@@ -8,16 +8,15 @@
 import SwiftUI
 
 struct DetailView: View {
-    @Environment(\.presentationMode) var presentationMode
-    let screenWidth = UIScreen.main.bounds.width
+    @Binding var isVisible: Bool
     
     var body: some View {
         ZStack {
             Image("panda")
                 .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(minWidth: 0, maxWidth: .infinity)
-                .offset(x: screenWidth)
+                .scaledToFill()
+                .frame(width: UIScreen.main.bounds.width, alignment: .topLeading)
+                .clipped()
             
             VStack {
                 HStack {
@@ -25,7 +24,7 @@ struct DetailView: View {
                     
                     CloseButton {
                         withAnimation {
-                            presentationMode.wrappedValue.dismiss()
+                            isVisible.toggle()
                         }
                     }//: CloseButton
                     .padding(20)
@@ -38,12 +37,15 @@ struct DetailView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.white)
         .transition(
-            .asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .top))
+            .asymmetric(
+                insertion: .move(edge: .top),
+                removal: .move(edge: .top)
+            )
         )
         .ignoresSafeArea()
     }
 }
 
 #Preview {
-    DetailView()
+    DetailView(isVisible: .constant(true))
 }
